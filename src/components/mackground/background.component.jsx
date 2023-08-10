@@ -3,16 +3,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import "./background.style.css";
 const Background = ({ children, image }) => {
   const container = {
-    hidden: { x: "200vw" },
+    hidden: { opacity: 0 },
     show: {
       x: 0,
-      transition: { delay: 0.5, duration: 2, when: "beforeChildren" },
+      transition: { delay: 0.5, duration: 2 },
     },
     exit: { opacity: 0, transition: { ease: "easeInOut", duration: 2 } },
   };
   return (
-    <div className="h-screen relative overflow-hidden">
-      <AnimatePresence initial={false}>
+    <AnimatePresence initial={false}>
+      <div className="h-screen relative overflow-hidden">
         <motion.div
           variants={container}
           initial="hidden"
@@ -25,8 +25,8 @@ const Background = ({ children, image }) => {
         >
           {children}
         </motion.div>
-      </AnimatePresence>
-    </div>
+      </div>
+    </AnimatePresence>
   );
 };
 

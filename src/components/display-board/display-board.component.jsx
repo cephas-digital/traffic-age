@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const DisplayBoard = ({ question, options }) => {
+const DisplayBoard = ({ question, options, width }) => {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -10,27 +10,28 @@ const DisplayBoard = ({ question, options }) => {
   };
   const baordChildOne = {
     show: {
-      rotate: [-3, 0, 3],
+      rotate: [-3, 3, -3],
       transition: {
-        yoyo: 10,
-        duration: 0.8,
+        duration: 2,
+        // ease: "easeInOut",
+        repeat: Infinity,
       },
     },
   };
   const baordChildTwo = {
     show: {
-      rotate: [3, 0, -3],
-      scale: 1,
+      rotate: [3, -3, 3],
       transition: {
-        yoyo: 10,
-        duration: 0.8,
+        duration: 2,
+        // ease: "easeInOut",
+        repeat: Infinity,
       },
     },
   };
   return (
-    <div>
+    <div className="w-full max-w-2xl">
       <motion.div
-        className="relative p-10"
+        className={`relative p-10`}
         variants={container}
         initial="hidden"
         animate="show"
@@ -48,7 +49,9 @@ const DisplayBoard = ({ question, options }) => {
         />
         <div className="relative z-50">
           <div className="py-10 text-center text-white">{question}</div>
+          {/* <div className="flex items-center justify-center gap-4"> */}
           {options}
+          {/* </div> */}
         </div>
       </motion.div>
     </div>
