@@ -13,6 +13,7 @@ import Sound from "../components/sound/sound.component";
 import Back from "../components/back/back.component";
 import DisplayBoard from "../components/display-board/display-board.component";
 import OptionButton from "../components/option-button/option-button.component";
+import DownloadApp from "../components/downloads/downloads.component";
 
 const Home = () => {
   const [stage, setStage] = useState(1);
@@ -23,20 +24,62 @@ const Home = () => {
 
   return (
     <>
-      {stage === 1 && <StageOne handleStage={() => goToNext(2)} />}
-      {stage === 2 && <StageTwo handleStage={() => goToNext(3)} />}
-      {stage === 3 && <StageTwoSub handleStage={() => goToNext(4)} />}
-      {stage === 4 && <StageThree handleStage={() => goToNext(5)} />}
-      {stage === 5 && <StageFour handleStage={() => goToNext(6)} />}
-      {stage === 6 && <StageFourSub handleStage={() => goToNext(7)} />}
-      {stage === 7 && <StageFive handleStage={() => goToNext(8)} />}
-      {stage === 8 && <StageFiveSub handleStage={() => goToNext(9)} />}
-      {stage === 9 && <StageSix handleStage={() => goToNext(10)} />}
-      {stage === 10 && <StageSeven handleStage={() => goToNext(11)} />}
-      {stage === 11 && <StageEight handleStage={() => goToNext(12)} />}
-      {stage === 12 && <StageNine handleStage={() => goToNext(13)} />}
-      {stage === 13 && <Calculating handleStage={() => goToNext(14)} />}
-      {stage === 14 && <Result handleStage={() => goToNext(1)} />}
+      <AnimatePresence mode="wait">
+        {stage === 1 && <StageOne handleStage={() => goToNext(2)} />}
+        {stage === 2 && (
+          <StageTwo
+            handleStage={() => goToNext(3)}
+            goBack={() => goToNext(1)}
+          />
+        )}
+        {stage === 3 && <StageTwoSub handleStage={() => goToNext(4)} />}
+        {stage === 4 && (
+          <StageThree
+            handleStage={() => goToNext(5)}
+            goBack={() => goToNext(2)}
+          />
+        )}
+        {stage === 5 && (
+          <StageFour
+            handleStage={() => goToNext(6)}
+            goBack={() => goToNext(4)}
+          />
+        )}
+        {stage === 6 && <StageFourSub handleStage={() => goToNext(7)} />}
+        {stage === 7 && (
+          <StageFive
+            handleStage={() => goToNext(8)}
+            goBack={() => goToNext(5)}
+          />
+        )}
+        {stage === 8 && <StageFiveSub handleStage={() => goToNext(9)} />}
+        {stage === 9 && (
+          <StageSix
+            handleStage={() => goToNext(10)}
+            goBack={() => goToNext(7)}
+          />
+        )}
+        {stage === 10 && (
+          <StageSeven
+            handleStage={() => goToNext(11)}
+            goBack={() => goToNext(9)}
+          />
+        )}
+        {stage === 11 && (
+          <StageEight
+            handleStage={() => goToNext(12)}
+            goBack={() => goToNext(10)}
+          />
+        )}
+        {stage === 12 && (
+          <StageNine
+            handleStage={() => goToNext(13)}
+            goBack={() => goToNext(11)}
+          />
+        )}
+        {stage === 13 && <Calculating handleStage={() => goToNext(14)} />}
+        {stage === 14 && <Result handleStage={() => goToNext(1)} />}
+      </AnimatePresence>
     </>
   );
 };
@@ -70,36 +113,20 @@ const StageOne = ({ handleStage }) => {
               </motion.button>
             </div>
           </div>
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp />
         </div>
       </div>
     </Background>
   );
 };
 
-const StageTwo = ({ handleStage }) => {
+const StageTwo = ({ handleStage, goBack }) => {
   return (
     <Background image={bg1}>
       <div className="relative h-full container mx-auto px-4">
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -146,23 +173,7 @@ const StageTwo = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
@@ -170,58 +181,51 @@ const StageTwo = ({ handleStage }) => {
 };
 
 const StageTwoSub = ({ handleStage }) => {
-  setTimeout(() => handleStage(), [5000]);
+  setTimeout(() => handleStage(), [4000]);
   const popUp = {
-    hidden: { y: 100000 },
+    hidden: {
+      y: 100,
+      //  opacity: 0
+    },
     show: {
-      y: 1,
-      transition: { duration: 2, delay: 2 },
+      y: 0,
+      // opacity: 1,
+      transition: { type: "spring", stiffness: 40, delay: 1.4 },
+    },
+    exit: {
+      y: 100,
+      // opacity: 1,
+      transition: { type: "spring", stiffness: 40 },
     },
   };
   return (
-    <AnimatePresence>
-      <Background image={bg1}>
-        <div className="relative h-full container mx-auto px-4">
-          <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
-            <div className="flex items-center justify-between w-full">
-              <Back />
-              {/* <div></div> */}
-              <Sound />
-            </div>
-            <div className="w-fit md:ml-auto">
-              <p className="text-xl" style={{ fontFamily: "ageer" }}>
-                Download the LagosRide App
-              </p>
-              <div className="flex items-center gap-2">
-                <img
-                  src={require("../assets/playstore.png")}
-                  alt=""
-                  className="h-10"
-                />
-                <img
-                  src={require("../assets/appstore.png")}
-                  alt=""
-                  className="h-10"
-                />
-              </div>
-            </div>
+    <Background image={bg1}>
+      <div className="relative h-full container mx-auto px-4">
+        <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
+          <div className="flex items-center justify-between w-full">
+            <Back />
+            {/* <div></div> */}
+            <Sound />
           </div>
-
+          <DownloadApp color={"white"} />
+        </div>
+        <AnimatePresence>
           <motion.img
             src={require("../assets/oshey.png")}
             alt=""
-            className="h-32 fixed bottom-32 left-8"
+            className="h-40 fixed bottom-6 left-0"
             variants={popUp}
             initial="hidden"
             animate="show"
+            exit="exit"
           />
-        </div>
-      </Background>
-    </AnimatePresence>
+        </AnimatePresence>
+      </div>
+    </Background>
   );
 };
 
-const StageThree = ({ handleStage }) => {
+const StageThree = ({ handleStage, goBack }) => {
   const [option, setOption] = useState(false);
 
   const container = {
@@ -245,7 +249,7 @@ const StageThree = ({ handleStage }) => {
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             <div></div>
             <Sound />
           </div>
@@ -264,6 +268,7 @@ const StageThree = ({ handleStage }) => {
                       width={"w-fit px-4"}
                       color={"black"}
                       colorOne={"white"}
+                      handleOption={handleStage}
                       children={
                         <span className="flex flex-col items-center">
                           <span className="fs font-sans text-xs font-black">
@@ -277,6 +282,7 @@ const StageThree = ({ handleStage }) => {
                       width={"w-fit px-4"}
                       colorOne={"white"}
                       color={"black"}
+                      handleOption={handleStage}
                       children={
                         <span className="flex flex-col items-center">
                           <span className="fs font-sans text-xs font-black">
@@ -290,6 +296,7 @@ const StageThree = ({ handleStage }) => {
                       width={"w-fit px-4"}
                       colorOne={"white"}
                       color={"black"}
+                      handleOption={handleStage}
                       children={
                         <span className="flex flex-col items-center">
                           <span className="fs font-sans text-xs font-black">
@@ -303,6 +310,7 @@ const StageThree = ({ handleStage }) => {
                       width={"w-fit px-4"}
                       colorOne={"white"}
                       color={"black"}
+                      handleOption={handleStage}
                       children={
                         <span className="flex flex-col items-center">
                           <span className="fs font-sans text-xs font-black">
@@ -318,7 +326,7 @@ const StageThree = ({ handleStage }) => {
                       width={"w-fit px-4"}
                       color={"white"}
                       colorOne={"#14AE5C"}
-                      bgStart={"white"  }
+                      bgStart={"white"}
                       handleOption={otherOptions}
                       children={
                         <span className="flex flex-col items-center text-lg">
@@ -354,37 +362,21 @@ const StageThree = ({ handleStage }) => {
               }
             />
           </div>
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
 
-const StageFour = ({ handleStage }) => {
+const StageFour = ({ handleStage, goBack }) => {
   return (
     <Background image={bg3}>
       <div className="relative h-full container mx-auto px-4">
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -421,35 +413,20 @@ const StageFour = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
 const StageFourSub = ({ handleStage }) => {
-  setTimeout(() => handleStage(), [5000]);
+  setTimeout(() => handleStage(), [3000]);
   const popUp = {
-    hidden: { y: 100000 },
+    hidden: { y: 100, opacity: 0 },
     show: {
-      y: 1,
-      transition: { duration: 2, delay: 2 },
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 40, delay: 1.4 },
     },
   };
   return (
@@ -462,29 +439,13 @@ const StageFourSub = ({ handleStage }) => {
               {/* <div></div> */}
               <Sound />
             </div>
-            <div className="w-fit md:ml-auto">
-              <p className="text-xl" style={{ fontFamily: "ageer" }}>
-                Download the LagosRide App
-              </p>
-              <div className="flex items-center gap-2">
-                <img
-                  src={require("../assets/playstore.png")}
-                  alt=""
-                  className="h-10"
-                />
-                <img
-                  src={require("../assets/appstore.png")}
-                  alt=""
-                  className="h-10"
-                />
-              </div>
-            </div>
+            <DownloadApp color={"white"} />
           </div>
 
           <motion.img
-            src={require("../assets/oshey.png")}
+            src={require("../assets/hustle-up.png")}
             alt=""
-            className="h-32 fixed bottom-32 left-8"
+            className="h-40 fixed bottom-6 left-0"
             variants={popUp}
             initial="hidden"
             animate="show"
@@ -494,14 +455,14 @@ const StageFourSub = ({ handleStage }) => {
     </AnimatePresence>
   );
 };
-const StageFive = ({ handleStage }) => {
+const StageFive = ({ handleStage, goBack }) => {
   return (
     <Background image={bg3}>
       <div className="relative h-full container mx-auto px-4">
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -538,35 +499,20 @@ const StageFive = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
-const StageFiveSub = ({ handleStage }) => {
-  setTimeout(() => handleStage(), [5000]);
+const StageFiveSub = ({ handleStage, goBack }) => {
+  setTimeout(() => handleStage(), [3000]);
   const popUp = {
-    hidden: { y: 100000 },
+    hidden: { y: 100, opacity: 0 },
     show: {
-      y: 1,
-      transition: { duration: 2, delay: 2 },
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 40, delay: 1.4 },
     },
   };
   return (
@@ -575,33 +521,17 @@ const StageFiveSub = ({ handleStage }) => {
         <div className="relative h-full container mx-auto px-4">
           <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
             <div className="flex items-center justify-between w-full">
-              <Back />
+              <Back goBack={goBack} />
               {/* <div></div> */}
               <Sound />
             </div>
-            <div className="w-fit md:ml-auto">
-              <p className="text-xl" style={{ fontFamily: "ageer" }}>
-                Download the LagosRide App
-              </p>
-              <div className="flex items-center gap-2">
-                <img
-                  src={require("../assets/playstore.png")}
-                  alt=""
-                  className="h-10"
-                />
-                <img
-                  src={require("../assets/appstore.png")}
-                  alt=""
-                  className="h-10"
-                />
-              </div>
-            </div>
+            <DownloadApp color={"white"} />
           </div>
 
           <motion.img
-            src={require("../assets/oshey.png")}
+            src={require("../assets/hustle-pay.png")}
             alt=""
-            className="h-32 fixed bottom-32 left-8"
+            className="h-40 fixed bottom-6 left-0"
             variants={popUp}
             initial="hidden"
             animate="show"
@@ -611,7 +541,7 @@ const StageFiveSub = ({ handleStage }) => {
     </AnimatePresence>
   );
 };
-const StageSix = ({ handleStage }) => {
+const StageSix = ({ handleStage, goBack }) => {
   const [option, setOption] = useState(false);
   const otherOptions = () => {
     if (option === false) {
@@ -626,7 +556,7 @@ const StageSix = ({ handleStage }) => {
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -748,29 +678,13 @@ const StageSix = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
-const StageSeven = ({ handleStage }) => {
+const StageSeven = ({ handleStage, goBack }) => {
   const [option, setOption] = useState(false);
   const otherOptions = () => {
     if (option === false) {
@@ -785,7 +699,7 @@ const StageSeven = ({ handleStage }) => {
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -907,29 +821,13 @@ const StageSeven = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
-const StageEight = ({ handleStage }) => {
+const StageEight = ({ handleStage, goBack }) => {
   const [option, setOption] = useState(false);
   const otherOptions = () => {
     if (option === false) {
@@ -944,7 +842,7 @@ const StageEight = ({ handleStage }) => {
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -1068,29 +966,13 @@ const StageEight = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
-const StageNine = ({ handleStage }) => {
+const StageNine = ({ handleStage, goBack }) => {
   const [option, setOption] = useState(false);
   const otherOptions = () => {
     if (option === false) {
@@ -1105,7 +987,7 @@ const StageNine = ({ handleStage }) => {
         {/* <div className="fixed inset-0 bg-white opacity-60"></div> */}
         <div className="relative z-20 h-full flex flex-col items-center justify-between py-10 w-full">
           <div className="flex items-center justify-between w-full">
-            <Back />
+            <Back goBack={goBack} />
             {/* <div></div> */}
             <Sound />
           </div>
@@ -1227,30 +1109,14 @@ const StageNine = ({ handleStage }) => {
               </div>
             }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
   );
 };
 const Calculating = ({ handleStage }) => {
-  setTimeout(() => handleStage(), [5000]);
+  // setTimeout(() => handleStage(), [5000]);
   return (
     <Background image={bg6}>
       <div className="relative h-full container mx-auto px-4">
@@ -1271,24 +1137,26 @@ const Calculating = ({ handleStage }) => {
                 Calculating
               </p>
             }
+            options={
+              <div className="flex items-center justify-center">
+                <motion.img
+                  src={require("../assets/tire.png")}
+                  alt=""
+                  className="h-20"
+                  animate={{
+                    // rotate: [0, 20, 45, 65, 90, 110, 135, 150, 180, 200, 225, 245, 260, 295, 315, 330, 360, 0],
+                    rotate: [0, 45, 90, 135, 180, 225, 270, 315, ],
+                    transition: {
+                      duration: 2,
+                      // ease: "easeInOut",
+                      repeat: Infinity,
+                    },
+                  }}
+                />
+              </div>
+            }
           />
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>
@@ -1340,23 +1208,7 @@ const Result = ({ handleStage }) => {
               </motion.button>
             </div>
           </div>
-          <div className="w-fit md:ml-auto">
-            <p className="text-xl" style={{ fontFamily: "ageer" }}>
-              Download the LagosRide App
-            </p>
-            <div className="flex items-center gap-2">
-              <img
-                src={require("../assets/playstore.png")}
-                alt=""
-                className="h-10"
-              />
-              <img
-                src={require("../assets/appstore.png")}
-                alt=""
-                className="h-10"
-              />
-            </div>
-          </div>
+          <DownloadApp color={"white"} />
         </div>
       </div>
     </Background>

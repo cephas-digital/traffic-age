@@ -1,6 +1,7 @@
 import { IoCaretBack } from "react-icons/io5";
 import { motion } from "framer-motion";
-const Back = () => {
+
+const Back = ({ goBack }) => {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -14,12 +15,13 @@ const Back = () => {
       variants={container}
       initial="hidden"
       animate="show"
+      onClick={goBack}
     >
-      <span className="w-8 h-8 flex items-center justify-center rounded-md bg-black text-white">
-        <IoCaretBack />
+      <span className="w-6 h-6 flex items-center justify-center rounded-md bg-black text-white">
+        <IoCaretBack size={16} />
       </span>
       <span
-        className="text-2xl hidden md:inline-block"
+        className="text-sm hidden md:inline-block"
         style={{ fontFamily: "ageer" }}
       >
         Back

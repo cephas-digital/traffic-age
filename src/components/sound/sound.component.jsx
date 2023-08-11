@@ -16,11 +16,11 @@ const Sound = () => {
       initial="hidden"
       animate="show"
     >
-      <span className="w-10 h-10 flex items-center justify-center rounded-md bg-black text-white">
-        <AiTwotoneSound size={30} />
+      <span className="w-6 h-6 flex items-center justify-center rounded-md bg-black text-white">
+        <AiTwotoneSound size={16} />
       </span>
       <span
-        className="text-2xl hidden md:inline-block"
+        className="text-sm hidden md:inline-block"
         style={{ fontFamily: "ageer" }}
       >
         Sound On
