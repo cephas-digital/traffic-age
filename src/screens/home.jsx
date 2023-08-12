@@ -24,7 +24,7 @@ const Home = () => {
 
   return (
     <>
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {stage === 1 && <StageOne handleStage={() => goToNext(2)} />}
         {stage === 2 && (
           <StageTwo
@@ -1116,7 +1116,7 @@ const StageNine = ({ handleStage, goBack }) => {
   );
 };
 const Calculating = ({ handleStage }) => {
-  // setTimeout(() => handleStage(), [5000]);
+  setTimeout(() => handleStage(), [5000]);
   return (
     <Background image={bg6}>
       <div className="relative h-full container mx-auto px-4">

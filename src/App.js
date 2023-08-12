@@ -16,7 +16,7 @@ import { SetAuthToken, SetDefaultHeaders } from "./data/Config";
 $(window).on("load", function () {
   $(".lds-ellipsis").fadeOut(); // will first fade out the loading animation
   $(".preloader").delay(333).fadeOut("slow"); // will fade out the white DIV that covers the website.
-  $("body").delay(333);
+  $("body").delay(3333);
 });
 
 SetDefaultHeaders();
@@ -30,7 +30,7 @@ const App = () => {
     store.dispatch(loadUser());
   }, []);
 
-  const stripePromise = loadStripe(process.env.REACT_APP_STIPE_PUBLISH_KEY);
+  // const stripePromise = loadStripe(process.env.REACT_APP_STIPE_PUBLISH_KEY);
   return (
     <Provider store={store}>
       <DataProvider>
