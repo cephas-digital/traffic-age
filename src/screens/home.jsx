@@ -572,7 +572,7 @@ const StageSix = ({ handleStage, goBack }) => {
             }
             options={
               <div>
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center flex-wrap gap-4">
                   <OptionButton
                     width={"w-fit px-4"}
                     color={"black"}
@@ -715,7 +715,7 @@ const StageSeven = ({ handleStage, goBack }) => {
             }
             options={
               <div>
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center flex-wrap gap-4">
                   <OptionButton
                     width={"w-fit px-4"}
                     color={"black"}
@@ -860,7 +860,7 @@ const StageEight = ({ handleStage, goBack }) => {
             }
             options={
               <div>
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center flex-wrap gap-4">
                   <OptionButton
                     width={"w-fit px-4"}
                     color={"black"}
@@ -1003,7 +1003,7 @@ const StageNine = ({ handleStage, goBack }) => {
             }
             options={
               <div>
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center flex-wrap gap-4">
                   <OptionButton
                     width={"w-fit px-4"}
                     color={"black"}
@@ -1189,7 +1189,7 @@ const Result = ({ handleStage }) => {
             </div>
             <div className="flex justify-center items-center gap-8">
               <motion.button
-                className="bg-mainDark py-2 text-white px-8 text-2xl"
+                className="bg-mainDark py-2 text-white px-8 whitespace-nowrap md:text-2xl"
                 style={{ fontFamily: "ageer" }}
                 onClick={handleStage}
                 whileHover={{ color: "black", backgroundColor: "#FFBE48" }}
@@ -1198,7 +1198,7 @@ const Result = ({ handleStage }) => {
                 Play again
               </motion.button>
               <motion.button
-                className="bg-white py-2 text-mainDark px-8 text-2xl border border-mainDark"
+                className="bg-white py-2 text-mainDark px-8 md:text-2xl border border-mainDark"
                 style={{ fontFamily: "ageer" }}
                 onClick={handleStage}
                 whileHover={{ color: "black", backgroundColor: "#FFBE48" }}

@@ -17,7 +17,7 @@ const generatePage = (pageName, folder) => {
 const PageRender = () => {
 	const { auth } = useContext(GlobalState);
 	const { page, id, step } = useParams();
-	const escape2 = ["view-tasks", "tutor-action", "profile", "student-action"],
+	const escape2 = [],
 		navigate = useNavigate();
 
 	useEffect(() => {
@@ -37,7 +37,7 @@ const PageRender = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [page, auth?.isAuth, navigate]);
 
-	if (auth.token && auth.loading) return <></>;
+	// if (auth.token && auth.loading) return <></>;
 	// if (general?.isLoading && users.isLoading) return <Loader />;
 
 	let pageName = "";

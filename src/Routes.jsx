@@ -10,6 +10,7 @@ import Sidebar from "./components/sidebar/sidebar";
 // import ModalComponents from "./components/ModalComponents";
 import { useDispatch, useSelector } from "react-redux";
 import Background from "./components/mackground/background.component";
+import DefaultHeader from "./components/defaultHeader/defaultHeader";
 // import { clearErrors } from "./data/Reducers/ErrorReducer";
 
 const Routers = () => {
@@ -21,16 +22,13 @@ const Routers = () => {
   return (
     <>
       <ToastContainer position="bottom-center" />
-      {/* <Sidebar> */}
-      {/* {auth?.isAuth ? <DefaultHeader /> : null} */}
-      {/* {navControl() ? <Nav /> : null} */}
+      {/* <DefaultHeader /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:page" element={<PageRender />} />
         <Route path="/:page/:id" element={<PageRender />} />
         <Route path="/:page/:id/:step" element={<PageRender />} />
       </Routes>
-      {/* </Sidebar>   */}
     </>
   );
 };

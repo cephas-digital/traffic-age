@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 import { createContext } from "react";
-import { BiCategoryAlt, BiBook, BiBookReader } from "react-icons/bi";
-import { RxPencil2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
@@ -32,95 +30,18 @@ const DataProvider = ({ children }) => {
 
   let { auth } = useSelector((state) => state);
 
-  let sidebarList = [
+  let headerList = [
     {
       name: "Dashboard",
       url: "/dashboard",
-      icon: <BiCategoryAlt className="icon" size={24} />,
-      permission: ["admin", "user", "organisation", "superadmin"],
     },
     {
-      name: "Employee",
-      url: "/",
-      icon: <BiBook className="icon" size={24} />,
-      links: [
-        { name: "Directory", url: "/directory" },
-        { name: "Profile", url: "/profile" },
-        { name: "Audit", url: "/audit" },
-        { name: "Onboarding", url: "/onboarding" },
-        { name: "Offbaording", url: "/offboarding" },
-      ],
-      type: "button",
-      permission: ["user", "organisation"],
+      name: "Users",
+      url: "/users",
     },
     {
-      name: "Engagement",
-      url: "/",
-      icon: <BiBook className="icon" size={24} />,
-      links: [
-        { name: "Announcements", url: "/announcements" },
-        { name: "Survey", url: "/survey" },
-        { name: "Feedback", url: "/audit" },
-        { name: "Onboarding", url: "/feedback" },
-      ],
-      type: "button",
-      permission: ["user", "organisation"],
-    },
-    {
-      name: "Leave",
-      url: "/leave",
-      icon: <BiCategoryAlt className="icon" size={24} />,
-      permission: ["admin", "user", "organisation", "superadmin"],
-    },
-    {
-      name: "Finance",
-      url: "/",
-      icon: <BiBook className="icon" size={24} />,
-      links: [
-        { name: "Payroll", url: "/payroll" },
-        { name: "Invoice", url: "/invoice" },
-      ],
-      type: "button",
-      permission: ["user", "organisation"],
-    },
-    {
-      name: "Recruitment",
-      url: "/",
-      icon: <BiBook className="icon" size={24} />,
-      links: [
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-      ],
-      type: "button",
-      permission: ["user", "organisation"],
-    },
-    {
-      name: "Request",
-      url: "/",
-      icon: <BiBook className="icon" size={24} />,
-      links: [
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-      ],
-      type: "button",
-      permission: ["user", "organisation"],
-    },
-    {
-      name: "Performance",
-      url: "/",
-      icon: <BiBook className="icon" size={24} />,
-      links: [
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-        { name: "Sub Menu", url: "/sub-menu" },
-      ],
-      type: "button",
-      permission: ["user", "organisation"],
+      name: "Players",
+      url: "/payers",
     },
   ];
 
@@ -129,7 +50,7 @@ const DataProvider = ({ children }) => {
 
     numberWithCommas,
 
-    sidebarList,
+    headerList,
     auth,
     nav,
     toggleNav,
