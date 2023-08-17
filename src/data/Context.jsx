@@ -41,7 +41,7 @@ const DataProvider = ({ children }) => {
     },
     {
       name: "Players",
-      url: "/payers",
+      url: "/players",
     },
   ];
 

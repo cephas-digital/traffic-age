@@ -22,9 +22,9 @@ const Routers = () => {
   return (
     <>
       <ToastContainer position="bottom-center" />
-      {/* <DefaultHeader /> */}
+      <DefaultHeader />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Index />} />
         <Route path="/:page" element={<PageRender />} />
         <Route path="/:page/:id" element={<PageRender />} />
         <Route path="/:page/:id/:step" element={<PageRender />} />

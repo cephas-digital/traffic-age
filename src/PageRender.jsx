@@ -55,7 +55,7 @@ const PageRender = () => {
 	} else {
 		pageName = `${page}`;
 	}
-	return generatePage(pageName, auth?.isAuth ? "pages" : "screens");
+	return generatePage(pageName, !auth?.isAuth ? "pages" : "screens");
 };
 
 export default PageRender;
