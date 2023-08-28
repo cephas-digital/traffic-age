@@ -10,11 +10,11 @@ export const SetAuthToken = token => {
 	}
 };
 
-export const useURL = process.env.REACT_APP_BASE_URL;
-// export const useURL =
-// 	process.env.NODE_ENV === "development"
-// 		? "http://localhost:6905"
-// 		: process.env.REACT_APP_BASE_URL;
+// export const useURL = process.env.REACT_APP_BASE_URL;
+export const useURL =
+	process.env.NODE_ENV === "development"
+		? "http://localhost:7300"
+		: process.env.REACT_APP_BASE_URL;
 
 export const SetDefaultHeaders = () => {
 	axios.defaults.baseURL = useURL;
