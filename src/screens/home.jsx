@@ -39,7 +39,7 @@ const Home = () => {
 		console.log({ info });
 		try {
 			var resp = await axios.get(
-				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${info?.latitude},${info?.longitude}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`,
+				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${info?.lat},${info?.long}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`,
 				{ baseURL: null }
 			);
 
