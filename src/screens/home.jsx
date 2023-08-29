@@ -51,7 +51,9 @@ const Home = () => {
 			var destinationPlaceId = await axios.post(
 				`/api/v1/user?place_id=${
 					resp?.data?.results?.find(
-						item => item?.plus_code === resp?.data?.plus_code
+						item =>
+							item?.plus_code?.global_code ===
+							resp?.data?.plus_code?.global_code
 					)?.place_id || ""
 				}`,
 				{ data }
@@ -122,7 +124,9 @@ const Home = () => {
 						data,
 						...user,
 						place_id: resp?.data?.results?.find(
-							item => item?.plus_code === resp?.data?.plus_code
+							item =>
+								item?.plus_code?.global_code ===
+								resp?.data?.plus_code?.global_code
 						)?.place_id,
 					});
 					setResult(destinationPlaceId?.data);
