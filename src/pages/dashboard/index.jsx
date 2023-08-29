@@ -87,7 +87,30 @@ const Dashboard = () => {
 					</div>
 					<div className="flex flex-col justify-between gap-8">
 						<div className="mt-4 space-y-4">
-							<TrafficAge
+							{player?.data?.map((item, i) => (
+								<TrafficAge
+									name={item?.name}
+									levelOne={item?.trafficAge}
+									levelTwo={0}
+									levelThree={0}
+									width={200}
+									onMouseEnter={e => {
+										// setLevel();
+										setName(item?.name);
+										// console.log(e);
+										// e.target.id === "one"
+										// 	? setLevel(108)
+										// 	: e.target.id === "two"
+										// 	? setLevel(150)
+										// 	: e.target.id === "three" && setLevel(180);
+										setLevel(item?.trafficAge);
+										handleMouseOver(e);
+									}}
+									onMouseLeave={handleMouseLeave}
+									key={i}
+								/>
+							))}
+							{/* <TrafficAge
 								name={"Ola-Akande Ayokunle"}
 								levelOne={108}
 								levelTwo={150}
@@ -219,15 +242,18 @@ const Dashboard = () => {
 									handleMouseOver(e);
 								}}
 								onMouseLeave={handleMouseLeave}
-							/>
+							/> */}
 						</div>
-						<div className="text-sm text-[#0D062D99] flex items-center justify-between">
-							<span>0</span>
-							<span>40</span>
-							<span>80</span>
-							<span>120</span>
-							<span>160</span>
-							<span>200</span>
+						<div className="flex">
+							<div className="w-1/5" />
+							<div className="text-sm text-[#0D062D99] flex items-center justify-between w-full">
+								<span>0</span>
+								<span>40</span>
+								<span>80</span>
+								<span>120</span>
+								<span>160</span>
+								<span>200</span>
+							</div>
 						</div>
 					</div>
 				</div>

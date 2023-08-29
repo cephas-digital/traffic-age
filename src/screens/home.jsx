@@ -95,7 +95,7 @@ const Home = () => {
 				var destinationPlaceId = await axios.post(`/api/v1/player`, {
 					data,
 					...user,
-					location: location || user?.location || "",
+					location: user?.location || location || "",
 				});
 				setResult(destinationPlaceId?.data);
 				console.log({ resp: destinationPlaceId?.data });
