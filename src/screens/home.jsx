@@ -20,7 +20,8 @@ import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
 const Home = () => {
-	let [data, setData] = useState([]);
+	let [data, setData] = useState([]),
+		[logUser, setLogUser] = useState(null);
 
 	const getCoords = async () => {
 		const pos = await new Promise((resolve, reject) => {
@@ -38,7 +39,7 @@ const Home = () => {
 		console.log({ info });
 		try {
 			var resp = await axios.get(
-				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${info?.coords?.latitude},${info?.coords?.longitude}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`,
+				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${info?.latitude},${info?.longitude}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`,
 				{ baseURL: null }
 			);
 
@@ -53,6 +54,7 @@ const Home = () => {
 			);
 
 			console.log({ resp: destinationPlaceId?.data });
+			setLogUser(destinationPlaceId?.data);
 		} catch (error) {
 			console.log({ error });
 		}
@@ -68,8 +70,8 @@ const Home = () => {
 	let [result, setResult] = useState(null);
 
 	const { getLastActiveTime } = useIdleTimer({
-		timeout: 1000 * 60 * 5,
-		onIdle: ![1, 13, 14, 15]?.includes(stage) ? getLocation : null,
+		timeout: 1000 * 60 * 1,
+		onIdle: ![1, 13, 14, 15]?.includes(stage) && !logUser ? getLocation : null,
 		debounce: 500,
 	});
 
@@ -119,6 +121,7 @@ const Home = () => {
 					});
 					setResult(destinationPlaceId?.data);
 					console.log({ resp: destinationPlaceId?.data });
+					setLogUser(null);
 					handleStage();
 				} catch (err) {
 					setLoading(false);
