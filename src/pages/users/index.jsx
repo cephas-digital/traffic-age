@@ -78,7 +78,7 @@ const Users = () => {
 								<td className="font-medium px-3 py-3 whitespace-nowrap">
 									{item?.item_id}
 								</td>
-								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap">
+								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap capitalize">
 									{item?.location?.vicinity ||
 									typeof item?.location === "string"
 										? item?.location
