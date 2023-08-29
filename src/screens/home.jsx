@@ -49,7 +49,7 @@ const Home = () => {
 		}
 		try {
 			var destinationPlaceId = await axios.post(
-				`/api/v1/user?place_id=${resp?.data?.results[0]?.place_id}`,
+				`/api/v1/user?place_id=${resp?.data?.results[0]?.place_id || ""}`,
 				{ data }
 			);
 
