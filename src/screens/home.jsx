@@ -21,37 +21,26 @@ import { toast } from "react-toastify";
 
 const Home = () => {
 	let [data, setData] = useState([]),
-		[logUser, setLogUser] = useState(null);
+		[logUser, setLogUser] = useState(null),
+		[location, setLocation] = useState("");
 
-	const getCoords = async () => {
-		const pos = await new Promise((resolve, reject) => {
-			navigator.geolocation.getCurrentPosition(resolve, reject);
-		});
+	// const getCoords = async () => {
+	// 	const pos = await new Promise((resolve, reject) => {
+	// 		navigator.geolocation.getCurrentPosition(resolve, reject);
+	// 	});
 
-		return {
-			long: pos.coords.longitude,
-			lat: pos.coords.latitude,
-		};
-	};
+	// 	return {
+	// 		long: pos.coords.longitude,
+	// 		lat: pos.coords.latitude,
+	// 	};
+	// };
 
 	let getLocation = async () => {
-		let info = await getCoords();
-		console.log({ info });
 		try {
-			var resp = await axios.get(
-				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${info?.lat},${info?.long}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`,
-				{ baseURL: null }
-			);
-
-			console.log({ resp: resp?.data });
-		} catch (error) {
-			console.log({ error });
-		}
-		try {
-			var destinationPlaceId = await axios.post(
-				`/api/v1/user?place_id=${resp?.data?.results[0]?.place_id || ""}`,
-				{ data }
-			);
+			var destinationPlaceId = await axios.post(`/api/v1/user`, {
+				data,
+				location,
+			});
 
 			console.log({ resp: destinationPlaceId?.data });
 			setLogUser(destinationPlaceId?.data);
@@ -71,12 +60,14 @@ const Home = () => {
 
 	const { getLastActiveTime } = useIdleTimer({
 		timeout: 1000 * 60 * 1,
-		onIdle: ![1, 13, 14, 15]?.includes(stage) && !logUser ? getLocation : null,
+		onIdle:
+			![1, 1.5, 13, 14, 15]?.includes(stage) && !logUser ? getLocation : null,
 		debounce: 500,
 	});
 
 	const goToNext = next => {
 		setStage(next);
+		setLogUser(null);
 	};
 
 	let handleNext = (datum, handleStage) => e => {
@@ -101,41 +92,24 @@ const Home = () => {
 				return toast.info("Please provide all necessary details");
 			setLoading("loading");
 			try {
-				let info = await getCoords();
-				console.log({ info });
-				try {
-					var resp = await axios.get(
-						`https://maps.googleapis.com/maps/api/geocode/json?latlng=${info?.lat},${info?.long}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`,
-						{ baseURL: null }
-					);
-
-					console.log({ resp: resp?.data });
-				} catch (error) {
-					console.log({ error });
-				}
-				try {
-					var destinationPlaceId = await axios.post(`/api/v1/player`, {
-						data,
-						...user,
-						place_id: resp?.data?.results?.[0]?.place_id,
-					});
-					setResult(destinationPlaceId?.data);
-					console.log({ resp: destinationPlaceId?.data });
-					setLogUser(null);
-					handleStage();
-				} catch (err) {
-					setLoading(false);
-					if (err) console.log(err.response?.data?.data, { err });
-					if (err?.response?.status === 429) toast.error(err?.response?.data);
-					let error = err.response?.data?.data;
-
-					if (error) {
-						error?.forEach(item => toast.error(item?.msg));
-					}
-				}
-			} catch (error) {
-				console.log({ error });
+				var destinationPlaceId = await axios.post(`/api/v1/player`, {
+					data,
+					...user,
+					location: location || user?.location || "",
+				});
+				setResult(destinationPlaceId?.data);
+				console.log({ resp: destinationPlaceId?.data });
+				setLogUser(null);
+				handleStage();
+			} catch (err) {
 				setLoading(false);
+				if (err) console.log(err.response?.data?.data, { err });
+				if (err?.response?.status === 429) toast.error(err?.response?.data);
+				let error = err.response?.data?.data;
+
+				if (error) {
+					error?.forEach(item => toast.error(item?.msg));
+				}
 			}
 			setLoading(false);
 		};
@@ -144,7 +118,15 @@ const Home = () => {
 		<>
 			<AnimatePresence mode="wait" initial={false}>
 				{stage === 1 && (
-					<StageOne handleStage={() => goToNext(2)} handleNext={handleNext} />
+					<StageOne handleStage={() => goToNext(1.5)} handleNext={handleNext} />
+				)}
+				{stage === 1.5 && (
+					<UserLocation
+						handleStage={() => goToNext(2)}
+						handleNext={handleNext}
+						location={location}
+						setLocation={setLocation}
+					/>
 				)}
 				{stage === 2 && (
 					<StageTwo
@@ -226,6 +208,8 @@ const Home = () => {
 						handleNext={handleNext}
 						loading={loading}
 						handleSubmit={handleSubmit}
+						location={location}
+						setLocation={setLocation}
 					/>
 				)}
 				{stage === 14 && (
@@ -1513,14 +1497,21 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 	);
 };
 
-const UserDetails = ({ handleStage, handleNext, handleSubmit, loading }) => {
+const UserDetails = ({
+	handleStage,
+	handleNext,
+	handleSubmit,
+	loading,
+	location,
+}) => {
 	let init = {
 			name: "",
 			telephone: "",
 			email: "",
+			location,
 		},
 		[user, setUser] = useState(init);
-	console.log({ loading });
+
 	return (
 		<Background image={bg5}>
 			<div className="relative h-full container mx-auto px-4">
@@ -1594,6 +1585,27 @@ const UserDetails = ({ handleStage, handleNext, handleSubmit, loading }) => {
 									/>
 								</div>
 							</motion.div>
+							<motion.div
+								className="flex items-center gap-2 text-white text-md relative"
+								style={{ fontFamily: "ageer" }}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ duration: 0.9 }}>
+								<div className="relative">
+									<div className="absolute inset-0 border-b skew-x-12 -rotate-6 mb-1 opacity-80"></div>
+									<div className="absolute inset-0 border-b skew-x-12 mb-1 opacity-80"></div>
+									<div className="absolute inset-0 border-b -skew-x-6 ml-2 mb-1 rotate-3 opacity-80"></div>
+									<input
+										type="text"
+										className="bg-transparent w-full border-none relative z-20 font-sans outline-0 outline-transparent text-black text-center"
+										placeholder="Ikeja"
+										value={user?.location}
+										onChange={e =>
+											setUser({ ...user, location: e.target.value })
+										}
+									/>
+								</div>
+							</motion.div>
 						</div>
 						<div className="flex justify-center items-center gap-8 mt-5">
 							<motion.button
@@ -1617,6 +1629,66 @@ const UserDetails = ({ handleStage, handleNext, handleSubmit, loading }) => {
 								whileHover={{ color: "black", backgroundColor: "#FFBE48" }}
 								transition={{ duration: 0.5 }}>
 								Reset
+							</motion.button>
+						</div>
+					</div>
+					<DownloadApp color={"white"} />
+				</div>
+			</div>
+		</Background>
+	);
+};
+
+const UserLocation = ({ handleStage, handleNext, location, setLocation }) => {
+	return (
+		<Background image={bg1}>
+			<div className="relative h-full container mx-auto px-4">
+				<div className="fixed inset-0"></div>
+				<div className="relative z-20 h-full flex flex-col items-center justify-between py-10">
+					<div className="flex items-center justify-end w-full">
+						<Sound />
+					</div>
+					<div className="w-full">
+						<div className="text-center mb-4" style={{ fontFamily: "ageer" }}>
+							<p>From where are you playing this game</p>
+						</div>
+						<div className="flex flex-col justify-center items-center">
+							<motion.div
+								className="flex items-center gap-2 text-white text-md relative"
+								style={{ fontFamily: "ageer" }}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ duration: 0.9 }}>
+								<div className="relative">
+									<div className="absolute inset-0 border-b skew-x-12 -rotate-6 mb-1 opacity-80"></div>
+									<div className="absolute inset-0 border-b skew-x-12 mb-1 opacity-80"></div>
+									<div className="absolute inset-0 border-b -skew-x-6 ml-2 mb-1 rotate-3 opacity-80"></div>
+									<input
+										type="text"
+										className="bg-transparent w-full border-none relative z-20 font-sans outline-0 outline-transparent text-black text-center"
+										placeholder="Ikeja"
+										value={location}
+										onChange={e => setLocation(e.target.value)}
+									/>
+								</div>
+							</motion.div>
+						</div>
+						<div className="flex justify-center items-center gap-8 mt-5">
+							<motion.button
+								className="bg-mainDark py-2 text-white px-8 whitespace-nowrap md:text-2xl"
+								style={{ fontFamily: "ageer" }}
+								onClick={handleNext({ location }, handleStage)}
+								whileHover={{ color: "black", backgroundColor: "#FFBE48" }}
+								transition={{ duration: 0.5 }}>
+								Next
+							</motion.button>
+							<motion.button
+								className="bg-white py-2 text-mainDark px-8 md:text-2xl border border-mainDark"
+								style={{ fontFamily: "ageer" }}
+								onClick={handleNext({}, handleStage)}
+								whileHover={{ color: "black", backgroundColor: "#FFBE48" }}
+								transition={{ duration: 0.5 }}>
+								Skip
 							</motion.button>
 						</div>
 					</div>

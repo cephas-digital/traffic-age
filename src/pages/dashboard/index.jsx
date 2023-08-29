@@ -26,7 +26,18 @@ const Dashboard = () => {
 		setToolTip(false);
 	};
 
-	let { player, user } = useSelector(state => state);
+	let { player, user } = useSelector(state => state),
+		colorArr = [
+			"#4A27AC",
+			"#EB5A93",
+			"#FEB934",
+			"#32AC27",
+			"#32FAE2",
+			"#FF00E5",
+			"#000000",
+			"#BBA3FF",
+			"#FEB934",
+		];
 
 	return (
 		<div className="block mt-24 p-6 bg-white border border-gray-200 rounded-lg shadow mx-8">
@@ -227,12 +238,15 @@ const Dashboard = () => {
 						</p>
 					</div>
 					<div className="mt-4 space-y-4">
-						<LocationMetric
-							bgColor={"#4A27AC"}
-							location={"Ikorodu"}
-							percent={"50%"}
-						/>
-						<LocationMetric
+						{user?.stat?.map((item, i) => (
+							<LocationMetric
+								bgColor={colorArr?.[i % colorArr?.length]}
+								location={item?._id}
+								percent={item?.percentage}
+								key={i}
+							/>
+						))}
+						{/* <LocationMetric
 							bgColor={"#EB5A93"}
 							location={"Ikeja"}
 							percent={"32%"}
@@ -271,7 +285,7 @@ const Dashboard = () => {
 							bgColor={"#FEB934"}
 							location={"Ojota"}
 							percent={"15.5%"}
-						/>
+						/> */}
 						<ToolTip evt={target} show={toolTip} level={level} name={name} />
 					</div>
 				</div>

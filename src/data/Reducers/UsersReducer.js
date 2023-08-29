@@ -11,6 +11,7 @@ let initialState = {
 	mainSearch: null,
 	isFound: null,
 	isUpdated: null,
+	stat: null,
 };
 
 export const usersSlice = createSlice({
@@ -41,6 +42,9 @@ export const usersSlice = createSlice({
 			state.data = payload?.data || payload;
 			state.paginate = payload?.paginate;
 		},
+		getStat: (state, { payload }) => {
+			state.stat = payload?.data || payload;
+		},
 		usersFail: state => {
 			state.isDeleted = false;
 			state.isAdded = false;
@@ -62,6 +66,7 @@ export const {
 	resetUsersSearch,
 	updateUsers,
 	logoutUsers,
+	getStat,
 } = usersSlice.actions;
 
 export const manageUsers = (type, data) => async dispatch => {
@@ -78,6 +83,12 @@ export const manageUsers = (type, data) => async dispatch => {
 			);
 			if (data?.search) dispatch(getSearchUsers(res.data));
 			else dispatch(getUsers(res.data));
+
+			if (!data?.search) {
+				let res2 = await axios.get(`/api/v1/user/stat`);
+				console.log({ stat: res2?.data });
+				dispatch(getStat(res2.data));
+			}
 		}
 		if (type !== "get") toast.success(res?.data?.msg);
 	} catch (err) {

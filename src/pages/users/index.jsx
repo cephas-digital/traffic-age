@@ -79,7 +79,10 @@ const Users = () => {
 									{item?.item_id}
 								</td>
 								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap">
-									{item?.location?.vicinity}
+									{item?.location?.vicinity ||
+									typeof item?.location === "string"
+										? item?.location
+										: "" || null}
 								</td>
 								<td className="font-medium text-right px-3 py-3 whitespace-nowrap">
 									{item?.deviceProperties?.client?.name} -
