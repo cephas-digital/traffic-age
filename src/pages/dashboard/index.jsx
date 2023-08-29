@@ -49,7 +49,7 @@ const Dashboard = () => {
 						}
 						title={"Total User"}
 						titleColor={"text-white opacity-80"}
-						amount={user?.paginate?.total || 500000}
+						amount={user?.paginate?.total || 0}
 						amountColor={"text-white"}
 					/>
 					<DashboardCard
@@ -63,7 +63,7 @@ const Dashboard = () => {
 						}
 						title={"Total Players"}
 						titleColor={"text-[#0D062D] opacity-80"}
-						amount={player?.paginate?.total || 500000}
+						amount={player?.paginate?.total || 0}
 						amountColor={"text-[#0D062D]"}
 					/>
 				</div>
