@@ -11,11 +11,9 @@ const TrafficAge = ({
 }) => {
 	const total = Number(levelOne) + Number(levelTwo) + Number(levelThree);
 	const percent = level => {
-		return (level * 100) / 200;
+		return (level * 100) / width;
 	};
-	// const one = useRef()
-	// const two = useRef()
-	// const three = useRef()
+
 	return (
 		<div className="flex items-center gap-2">
 			<p className="text-sm text-[#0D062D99] w-1/5 whitespace-nowrap overflow-x-hidden capitalize">

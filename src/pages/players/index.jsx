@@ -66,7 +66,7 @@ const Players = () => {
 							<th
 								scope="col"
 								className="font-medium px-3 py-3 whitespace-nowrap">
-								user Id
+								player Id
 							</th>
 							<th
 								scope="col"
@@ -113,7 +113,9 @@ const Players = () => {
 									{item?.telephone}
 								</td>
 								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap">
-									{item?.trafficAge}
+									{item?.trafficAgeLabel?.includes(" ")
+										? item?.trafficAgeLabel
+										: item?.trafficAge}
 								</td>
 								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap">
 									{item?.numberOfShares}

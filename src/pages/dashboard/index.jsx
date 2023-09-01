@@ -93,7 +93,12 @@ const Dashboard = () => {
 									levelOne={item?.trafficAge}
 									levelTwo={0}
 									levelThree={0}
-									width={200}
+									width={
+										Math.ceil(
+											Math.max(...player?.data.map(item => item?.trafficAge)) /
+												10
+										) * 10
+									}
 									onMouseEnter={e => {
 										// setLevel();
 										setName(item?.name);
@@ -248,11 +253,40 @@ const Dashboard = () => {
 							<div className="w-1/5" />
 							<div className="text-sm text-[#0D062D99] flex items-center justify-between w-full">
 								<span>0</span>
-								<span>40</span>
-								<span>80</span>
-								<span>120</span>
-								<span>160</span>
-								<span>200</span>
+								<span>
+									{Math.ceil(
+										(0.2 *
+											Math.max(...player?.data.map(item => item?.trafficAge))) /
+											10
+									) * 10}
+									{/* 40 */}
+								</span>
+								<span>
+									{Math.ceil(
+										(0.4 *
+											Math.max(...player?.data.map(item => item?.trafficAge))) /
+											10
+									) * 10}
+								</span>
+								<span>
+									{Math.ceil(
+										(0.6 *
+											Math.max(...player?.data.map(item => item?.trafficAge))) /
+											10
+									) * 10}
+								</span>
+								<span>
+									{Math.ceil(
+										(0.8 *
+											Math.max(...player?.data.map(item => item?.trafficAge))) /
+											10
+									) * 10}
+								</span>
+								<span>
+									{Math.ceil(
+										Math.max(...player?.data.map(item => item?.trafficAge)) / 10
+									) * 10}
+								</span>
 							</div>
 						</div>
 					</div>
@@ -264,14 +298,17 @@ const Dashboard = () => {
 						</p>
 					</div>
 					<div className="mt-4 space-y-4">
-						{user?.stat?.map((item, i) => (
-							<LocationMetric
-								bgColor={colorArr?.[i % colorArr?.length]}
-								location={item?._id}
-								percent={item?.percentage}
-								key={i}
-							/>
-						))}
+						{user?.stat
+							// ?.sort((a, b) => Number(b?.percentage) - Number(a?.percentage))
+							?.slice(0, 10)
+							?.map((item, i) => (
+								<LocationMetric
+									bgColor={colorArr?.[i % colorArr?.length]}
+									location={item?._id}
+									percent={item?.percentage}
+									key={i}
+								/>
+							))}
 						{/* <LocationMetric
 							bgColor={"#EB5A93"}
 							location={"Ikeja"}

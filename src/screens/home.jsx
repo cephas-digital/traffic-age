@@ -22,7 +22,14 @@ import { toast } from "react-toastify";
 const Home = () => {
 	let [data, setData] = useState([]),
 		[logUser, setLogUser] = useState(null),
-		[location, setLocation] = useState("");
+		[location, setLocation] = useState(""),
+		[actual, setActual] = useState({
+			departureTime: "",
+			resumptionTime: "",
+			closingTime: "",
+			arrivalTime: "",
+			timeInLagos: "",
+		});
 
 	// const getCoords = async () => {
 	// 	const pos = await new Promise((resolve, reject) => {
@@ -70,7 +77,7 @@ const Home = () => {
 		setLogUser(null);
 	};
 
-	let handleNext = (datum, handleStage) => e => {
+	let handleNext = (datum, handleStage, main) => e => {
 			e?.preventDefault();
 			let findStage = data?.find(item => stage === item?.stage),
 				newData = data;
@@ -82,6 +89,9 @@ const Home = () => {
 				newData = [...data, { stage, ...datum }];
 			}
 			setData(newData);
+			if (main) {
+				setActual({ ...actual, [main?.title]: main?.response });
+			}
 			handleStage();
 		},
 		[loading, setLoading] = useState(false),
@@ -91,11 +101,13 @@ const Home = () => {
 			if (!user?.email || !user?.telephone || !user?.name)
 				return toast.info("Please provide all necessary details");
 			setLoading("loading");
+
 			try {
 				var destinationPlaceId = await axios.post(`/api/v1/player`, {
 					data,
 					...user,
 					location: user?.location || location || "",
+					...actual,
 				});
 				setResult(destinationPlaceId?.data);
 				console.log({ resp: destinationPlaceId?.data });
@@ -437,7 +449,8 @@ const StageThree = ({ handleStage, goBack, handleNext }) => {
 													question: "How long have you worked in Lagos",
 													answer: "1 Year",
 												},
-												handleStage
+												handleStage,
+												{ title: "timeInLagos", response: 1 }
 											)}
 											children={
 												<span className="flex flex-col items-center">
@@ -457,7 +470,8 @@ const StageThree = ({ handleStage, goBack, handleNext }) => {
 													question: "How long have you worked in Lagos",
 													answer: "2 Years",
 												},
-												handleStage
+												handleStage,
+												{ title: "timeInLagos", response: 2 }
 											)}
 											children={
 												<span className="flex flex-col items-center">
@@ -477,7 +491,8 @@ const StageThree = ({ handleStage, goBack, handleNext }) => {
 													question: "How long have you worked in Lagos",
 													answer: "3 Years",
 												},
-												handleStage
+												handleStage,
+												{ title: "timeInLagos", response: 3 }
 											)}
 											children={
 												<span className="flex flex-col items-center">
@@ -497,7 +512,8 @@ const StageThree = ({ handleStage, goBack, handleNext }) => {
 													question: "How long have you worked in Lagos",
 													answer: "4 Years",
 												},
-												handleStage
+												handleStage,
+												{ title: "timeInLagos", response: 4 }
 											)}
 											children={
 												<span className="flex flex-col items-center">
@@ -554,7 +570,8 @@ const StageThree = ({ handleStage, goBack, handleNext }) => {
 															question: "How long have you worked in Lagos",
 															answer: `${value} Years`,
 														},
-														handleStage
+														handleStage,
+														{ title: "timeInLagos", response: value }
 													)}
 													children={
 														<span className="flex flex-col items-center text-lg">
@@ -819,7 +836,8 @@ const StageSix = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `07:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "resumptionTime", response: "07:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -837,7 +855,8 @@ const StageSix = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `08:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "resumptionTime", response: "08:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -855,7 +874,8 @@ const StageSix = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `09:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "resumptionTime", response: "09:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -873,7 +893,8 @@ const StageSix = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `10:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "resumptionTime", response: "10:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -913,7 +934,7 @@ const StageSix = ({ handleStage, goBack, handleNext }) => {
 												<div className="absolute inset-0 border-b -skew-x-6 ml-2 mb-1 rotate-3 opacity-30"></div>
 												<input
 													type="time"
-													className="bg-transparent w-12 border-none relative z-20 font-sans font-black outline-0 outline-transparent"
+													className="bg-transparent w-12 border-none relative z-20 font-sans font-white outline-0 outline-transparent"
 													placeholder="00"
 													value={value}
 													onChange={e => setValue(e.target.value)}
@@ -944,7 +965,8 @@ const StageSix = ({ handleStage, goBack, handleNext }) => {
 														question: "What time do you resume work",
 														answer: value,
 													},
-													handleStage
+													handleStage,
+													{ title: "resumptionTime", response: value }
 												)}
 												children={
 													<span className="flex flex-col items-center text-lg">
@@ -994,7 +1016,7 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 							<p
 								className="text-4xl text-center"
 								style={{ fontFamily: "ageer" }}>
-								What time do you resume <br /> work
+								What time do you leave for <br /> work
 								<span className="c font-sans font-black">?</span>
 							</p>
 						}
@@ -1010,7 +1032,8 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `07:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "departureTime", response: "07:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1028,7 +1051,8 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `08:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "departureTime", response: "08:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1046,7 +1070,8 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `09:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "departureTime", response: "09:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1064,7 +1089,8 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you resume work",
 												answer: `10:00 AM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "departureTime", response: "10:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1104,7 +1130,7 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 												<div className="absolute inset-0 border-b -skew-x-6 ml-2 mb-1 rotate-3 opacity-30"></div>
 												<input
 													type="time"
-													className="bg-transparent w-12 border-none relative z-20 font-sans font-black outline-0 outline-transparent"
+													className="bg-transparent w-12 border-none relative z-20 font-sans font-white outline-0 outline-transparent"
 													placeholder="00"
 													value={value}
 													onChange={e => setValue(e.target.value)}
@@ -1120,7 +1146,8 @@ const StageSeven = ({ handleStage, goBack, handleNext }) => {
 														question: "What time do you resume work",
 														answer: value,
 													},
-													handleStage
+													handleStage,
+													{ title: "departureTime", response: value }
 												)}
 												children={
 													<span className="flex flex-col items-center text-lg">
@@ -1187,7 +1214,8 @@ const StageEight = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `03:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "closingTime", response: "03:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1205,7 +1233,8 @@ const StageEight = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `04:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "closingTime", response: "04:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1223,7 +1252,8 @@ const StageEight = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `05:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "closingTime", response: "05:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1241,7 +1271,8 @@ const StageEight = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `06:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "closingTime", response: "06:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1281,7 +1312,7 @@ const StageEight = ({ handleStage, goBack, handleNext }) => {
 												<div className="absolute inset-0 border-b -skew-x-6 ml-2 mb-1 rotate-3 opacity-30"></div>
 												<input
 													type="time"
-													className="bg-transparent w-12 border-none relative z-20 font-sans font-black outline-0 outline-transparent"
+													className="bg-transparent w-12 border-none relative z-20 font-sans font-white outline-0 outline-transparent"
 													placeholder="00"
 													value={value}
 													onChange={e => setValue(e.target.value)}
@@ -1297,7 +1328,8 @@ const StageEight = ({ handleStage, goBack, handleNext }) => {
 														question: "What time do you resume work",
 														answer: value,
 													},
-													handleStage
+													handleStage,
+													{ title: "closingTime", response: value }
 												)}
 												children={
 													<span className="flex flex-col items-center text-lg">
@@ -1363,7 +1395,8 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `03:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "arrivalTime", response: "03:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1381,7 +1414,8 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `04:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "arrivalTime", response: "04:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1399,7 +1433,8 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `05:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "arrivalTime", response: "05:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1417,7 +1452,8 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 												question: "What time do you close from work",
 												answer: `06:00 PM`,
 											},
-											handleStage
+											handleStage,
+											{ title: "arrivalTime", response: "06:00" }
 										)}
 										children={
 											<span className="flex flex-col items-center">
@@ -1457,7 +1493,7 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 												<div className="absolute inset-0 border-b -skew-x-6 ml-2 mb-1 rotate-3 opacity-30"></div>
 												<input
 													type="time"
-													className="bg-transparent w-12 border-none relative z-20 font-sans font-black outline-0 outline-transparent"
+													className="bg-transparent w-12 border-none relative z-20 font-sans font-white outline-0 outline-transparent"
 													placeholder="00"
 													value={value}
 													onChange={e => setValue(e.target.value)}
@@ -1473,7 +1509,8 @@ const StageNine = ({ handleStage, goBack, handleNext }) => {
 														question: "What time do you resume work",
 														answer: value,
 													},
-													handleStage
+													handleStage,
+													{ title: "arrivalTime", response: value }
 												)}
 												children={
 													<span className="flex flex-col items-center text-lg">
@@ -1769,9 +1806,11 @@ const Result = ({ handleStage, handleNext, result }) => {
 							<div className="bg-black text-white py-4 max-w-4xl mx-auto my-2">
 								{" "}
 								<span className="font-sans font-black">
-									{result?.data?.trafficAge || 3}
+									{result?.data?.trafficAgeLabel ||
+										result?.data?.trafficAge ||
+										3}
 								</span>{" "}
-								years
+								{result?.data?.trafficAgeLabel ? "" : "years"}
 							</div>
 						</div>
 						<div className="flex justify-center items-center gap-8">
