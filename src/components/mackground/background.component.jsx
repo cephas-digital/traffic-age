@@ -37,7 +37,7 @@ const Background = ({ children, image }) => {
         }
       }
     });
-    console.log("observer", observer);
+    // console.log("observer", observer);
     observer.observe(ref.current, { attributes: true });
 
     return () => {
