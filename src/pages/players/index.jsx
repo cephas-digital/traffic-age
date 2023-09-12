@@ -113,12 +113,18 @@ const Players = () => {
 									{item?.telephone}
 								</td>
 								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap">
+<<<<<<< HEAD
 									{/* {item?.trafficAgeLabel?.includes(" ")
 										? item?.trafficAgeLabel
 										: item?.trafficAge} */}
 										{
 											item?.trafficAge
 										}
+=======
+									{item?.trafficAgeLabel?.includes(" ")
+										? item?.trafficAgeLabel
+										: item?.trafficAge}
+>>>>>>> 3ab49fa1d9fea1b44ffd349d49775ef28cc2cef3
 								</td>
 								<td className="font-medium text-justify px-3 py-3 whitespace-nowrap">
 									{item?.numberOfShares}
