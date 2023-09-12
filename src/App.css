@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "ageer";
+  src: url("./assets/ageer2/Ageer-PersonalUse.otf");
+  /* src: local("Euclid Circular A Bold"), local("EuclidCircularA-Bold"),
+    url("./assets/font/EuclidCircularA-Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/font/EuclidCircularA-Bold.woff2") format("woff2"),
+    url("./assets/font/EuclidCircularA-Bold.woff") format("woff"),
+    url("./assets/font/EuclidCircularA-Bold.ttf") format("truetype"); */
+  font-weight: bold;
+  font-style: normal;
+}
+
+.hexagon {
+  width: 35px;
+  height: 18px;
+  position: relative;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.hexagon:before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 17.5px solid transparent;
+  border-right: 18.5px solid transparent;
+  border-bottom: 8.75px solid white;
+  border-radius: 2px;
+
+}
+
+.hexagon:after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 17.5px solid transparent;
+  border-right: 17.5px solid transparent;
+  border-top: 8.75px solid #fff;
+  border-radius: 4px;
+}
