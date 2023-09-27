@@ -1905,9 +1905,7 @@ const Result = ({ handleStage, handleNext, result }) => {
               <div className="bg-black text-white py-4 max-w-4xl mx-auto my-2">
                 {" "}
                 <span className="font-sans font-black">
-                  {result?.data?.trafficAgeLabel ||
-                    result?.data?.trafficAge ||
-                    3}
+                  {result?.data?.trafficAge} {result?.data?.trafficAgeLabel}
                 </span>{" "}
                 {result?.data?.trafficAgeLabel ? "" : "years"}
               </div>
